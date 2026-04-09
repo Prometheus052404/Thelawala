@@ -1,0 +1,18 @@
+\contentsline {section}{\numberline {1}Problem Statement}{2}{section.1}%
+\contentsline {section}{\numberline {2}Objectives}{2}{section.2}%
+\contentsline {section}{\numberline {3}Assumptions}{2}{section.3}%
+\contentsline {section}{\numberline {4}Concept Design}{3}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Research-Driven Focus Areas}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Core Concept}{3}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Addressing Hardware Constraints --- The AUJAR Device}{3}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Solution Architecture}{4}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Bill of Materials}{5}{section.5}%
+\contentsline {section}{\numberline {6}Prototype}{5}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Technology Stack}{6}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Application Screenshots}{7}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Key Implementation Details}{8}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Outcome \& Inferences}{8}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Outcomes}{8}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Inferences}{8}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Future Works \& Development}{9}{section.8}%
+\contentsline {section}{\numberline {9}References}{9}{section.9}%

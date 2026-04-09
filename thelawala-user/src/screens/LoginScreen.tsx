@@ -1,0 +1,169 @@
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  ActivityIndicator,
+  StatusBar,
+} from 'react-native';
+import { clientLogin, clientRegister } from '../services/api';
+
+export default function LoginScreen({ navigation }: any) {
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!phoneNumber.trim() || !password.trim()) {
+      Alert.alert('Missing Fields', 'Please enter both Phone Number and Password.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const data = await clientLogin(phoneNumber.trim(), password);
+      navigation.replace('Home', {
+        phoneNumber: data.client.phoneNumber,
+        clientId: data.client.id,
+        token: data.token,
+      });
+    } catch (err: any) {
+      if (err.error === 'not_found') {
+        Alert.alert(
+          'Account Not Found',
+          'Would you like to register with these credentials?',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Register', onPress: handleRegister },
+          ],
+        );
+      } else {
+        Alert.alert('Login Failed', err.message || err.error || 'Could not connect to server.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRegister = async () => {
+    setLoading(true);
+    try {
+      const data = await clientRegister(phoneNumber.trim(), password);
+      Alert.alert('Welcome!', 'Account created successfully.');
+      navigation.replace('Home', {
+        phoneNumber: data.client.phoneNumber,
+        clientId: data.client.id,
+        token: data.token,
+      });
+    } catch (err: any) {
+      Alert.alert('Registration Failed', err.message || err.error || 'Could not register.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#1a1a2e" />
+
+      <View style={styles.logoArea}>
+        <Text style={styles.logoIcon}>🛒</Text>
+        <Text style={styles.title}>Thelawala</Text>
+        <Text style={styles.subtitle}>Buyer App</Text>
+      </View>
+
+      <View style={styles.card}>
+        <TextInput
+          style={styles.input}
+          placeholder="Phone Number"
+          placeholderTextColor="#999"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+          keyboardType="phone-pad"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="#999"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>LOGIN</Text>
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleRegister} disabled={loading}>
+          <Text style={styles.linkText}>Don't have an account? Register</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24,
+    backgroundColor: '#1a1a2e',
+  },
+  logoArea: { alignItems: 'center', marginBottom: 32 },
+  logoIcon: { fontSize: 56, marginBottom: 8 },
+  title: { fontSize: 32, fontWeight: '800', color: '#0abde3' },
+  subtitle: {
+    fontSize: 14,
+    color: '#aaa',
+    marginTop: 4,
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+  },
+  card: {
+    backgroundColor: '#16213e',
+    borderRadius: 16,
+    padding: 24,
+    elevation: 8,
+  },
+  input: {
+    backgroundColor: '#0f3460',
+    color: '#fff',
+    padding: 14,
+    borderRadius: 10,
+    marginBottom: 14,
+    fontSize: 15,
+    borderWidth: 1,
+    borderColor: '#1a4a7a',
+  },
+  button: {
+    backgroundColor: '#0abde3',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  buttonDisabled: { opacity: 0.6 },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+    letterSpacing: 1,
+  },
+  linkText: {
+    color: '#53a8b6',
+    textAlign: 'center',
+    marginTop: 18,
+    fontSize: 13,
+  },
+});

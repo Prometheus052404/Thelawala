@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "thelawala-user",
+    "slug": "thelawala-user",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.prototype.thelawalauser",
+      "adaptiveIcon": {
+        "backgroundColor": "#1a1a2e"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
+      }
+    },
+    "web": {},
+    "extra": {
+      "apiBaseUrl": "http://10.200.48.248:5000"
+    }
+  }
+}
