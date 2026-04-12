@@ -26,6 +26,11 @@
     },
     "android": {
       "package": "com.prototype.thelawalavendor",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "BLUETOOTH_SCAN",
+        "BLUETOOTH_CONNECT"
+      ],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",

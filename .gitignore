@@ -6,3 +6,7 @@ build/
 android/
 ios/
 .env
+*.log
+*.aux
+*.out
+*.toc

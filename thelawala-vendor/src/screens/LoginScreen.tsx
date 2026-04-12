@@ -99,6 +99,13 @@ export default function LoginScreen({ navigation }: any) {
         <TouchableOpacity onPress={handleRegister} disabled={loading}>
           <Text style={styles.linkText}>Don't have an account? Register</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ServerConfig', { mode: 'edit' })}
+          disabled={loading}
+        >
+          <Text style={styles.serverLinkText}>Change Server IP</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -172,5 +179,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 18,
     fontSize: 13,
+  },
+  serverLinkText: {
+    color: '#e94560',
+    textAlign: 'center',
+    marginTop: 10,
+    fontSize: 13,
+    textDecorationLine: 'underline',
   },
 });

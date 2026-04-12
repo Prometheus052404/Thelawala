@@ -1,13 +1,11 @@
-import Constants from 'expo-constants';
 import { io, Socket } from 'socket.io-client';
-
-const extra = (Constants.expoConfig?.extra ?? Constants.manifest?.extra) as Record<string, unknown> | undefined;
-const BASE_URL = typeof extra?.apiBaseUrl === 'string' ? extra.apiBaseUrl : 'http://10.0.2.2:5000';
+import { getServerBaseUrl } from './serverConfig';
 
 // ──────── REST helpers ────────
 
 async function request(path: string, options: RequestInit = {}) {
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const baseUrl = getServerBaseUrl();
+  const res = await fetch(`${baseUrl}${path}`, {
     ...options,
     headers: { 'Content-Type': 'application/json', ...options.headers },
   });
@@ -50,13 +48,14 @@ export function fetchInventory(token: string) {
 let socket: Socket | null = null;
 
 export function connectSocket(token: string): Socket {
+  const baseUrl = getServerBaseUrl();
   if (socket?.connected) return socket;
   // Clean up any stale socket before creating a new one
   if (socket) {
     socket.removeAllListeners();
     socket.disconnect();
   }
-  socket = io(BASE_URL, { auth: { token }, reconnection: true, reconnectionAttempts: Infinity, reconnectionDelay: 2000 });
+  socket = io(baseUrl, { auth: { token }, reconnection: true, reconnectionAttempts: Infinity, reconnectionDelay: 2000 });
   return socket;
 }
 
