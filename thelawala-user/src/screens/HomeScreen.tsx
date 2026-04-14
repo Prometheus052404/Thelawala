@@ -138,7 +138,7 @@ export default function HomeScreen({ route }: any) {
         setSearchResults([
           {
             thelaId: data.thelaId,
-            vendorId: data.thelaId,
+            vendorId: data.vendorId,
             location: data.location,
             inventory: data.inventory || [],
           },
@@ -148,7 +148,7 @@ export default function HomeScreen({ route }: any) {
         setSearchResults(
           (data.results || []).map((v: any) => ({
             thelaId: v.thelaId,
-            vendorId: v.thelaId,
+            vendorId: v.vendorId,
             location: v.location,
             inventory: v.inventory || [],
           })),

@@ -15,6 +15,7 @@ router.get('/vendor/:id', async (req, res) => {
     }
     return res.json({
       status: 'online',
+      vendorId: String(vendor._id),
       thelaId: vendor.thelaId,
       location: vendor.lastLocation,
       inventory: vendor.currentInventory,
@@ -35,6 +36,7 @@ router.get('/item/:itemName', async (req, res) => {
         item.name && item.name.toLowerCase().includes(query) && item.quantity > 0
       ))
       .map(v => ({
+        vendorId: String(v._id),
         thelaId: v.thelaId,
         location: v.lastLocation,
         inventory: v.currentInventory.filter(item =>

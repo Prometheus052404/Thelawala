@@ -138,7 +138,7 @@ export default function HomeScreen({ route }: any) {
   }, [token, stock]);
 
   useEffect(() => {
-    if (inventoryLoaded && stock.length > 0) syncInventory();
+    if (inventoryLoaded) syncInventory();
   }, [stock, syncInventory, inventoryLoaded]);
 
   // --- 6. BROADCAST LOCATION ---
