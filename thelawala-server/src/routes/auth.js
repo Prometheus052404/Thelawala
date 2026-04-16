@@ -8,6 +8,7 @@ const router = express.Router();
 // ──────────── Vendor Auth ────────────
 
 router.post('/vendor/login', async (req, res) => {
+  console.log("vendor/login");  
   try {
     const { thelaId, password } = req.body;
     if (!thelaId || !password) {
@@ -28,6 +29,7 @@ router.post('/vendor/login', async (req, res) => {
     return res.json({ token, vendor: { thelaId: vendor.thelaId, id: vendor._id } });
   } catch (err) {
     return res.status(500).json({ error: 'Server error' });
+    console.log(err)
   }
 });
 

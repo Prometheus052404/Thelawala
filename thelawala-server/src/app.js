@@ -13,6 +13,7 @@ app.use(express.json());
 // Health check
 app.get('/', (_req, res) => {
   res.json({ status: 'ok', service: 'Thelawala Bridge Server' });
+  console.log("Health Check Request served.");
 });
 
 // REST Routes

@@ -12,7 +12,7 @@ const server = http.createServer(app);
 initSocket(server);
 
 connectDB().then(() => {
-  server.listen(PORT, () => {
+  server.listen(PORT, '0.0.0.0', () => {
     console.log(`[SERVER] Thelawala Bridge Server running on port ${PORT}`);
   });
 });
