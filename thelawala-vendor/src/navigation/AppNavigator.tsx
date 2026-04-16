@@ -17,7 +17,11 @@ export default function AppNavigator({ initialRouteName = 'Login' }: AppNavigato
       <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
         <Stack.Screen name="ServerConfig" component={ServerConfigScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          initialParams={{ thelaId: 'DEBUG-AUJAR', token: 'debug-token', debugNoServer: true }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

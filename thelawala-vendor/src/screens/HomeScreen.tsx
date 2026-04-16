@@ -16,7 +16,10 @@ import InventorySection, { StockItem } from '../components/InventorySection';
 import { connectSocket, disconnectSocket, getSocket, updateInventory, fetchInventory } from '../services/api';
 
 export default function HomeScreen({ route }: any) {
-  const { thelaId, token } = route.params;
+  const params = route?.params ?? {};
+  const thelaId = params.thelaId ?? 'DEBUG-AUJAR';
+  const token = params.token ?? 'debug-token';
+  const debugNoServer = params.debugNoServer === true;
 
   // --- 1. HARDWARE MODULE (Bluetooth / GPS) ---
   const { aujarActive, location, connectToAujar } = useAujarBluetooth();
@@ -54,6 +57,11 @@ export default function HomeScreen({ route }: any) {
 
   // --- LOAD SAVED INVENTORY FROM SERVER ---
   useEffect(() => {
+    if (debugNoServer) {
+      setInventoryLoaded(true);
+      return;
+    }
+
     (async () => {
       try {
         const data = await fetchInventory(token);
@@ -66,7 +74,7 @@ export default function HomeScreen({ route }: any) {
         setInventoryLoaded(true);
       }
     })();
-  }, [token]);
+  }, [token, debugNoServer]);
 
   // Inventory Logic
   const addItem = () => {
@@ -91,6 +99,8 @@ export default function HomeScreen({ route }: any) {
 
   // --- 4. SOCKET CONNECTION ---
   useEffect(() => {
+    if (debugNoServer) return;
+
     // Force a fresh connection each time HomeScreen mounts
     disconnectSocket();
     const socket = connectSocket(token);
@@ -126,16 +136,17 @@ export default function HomeScreen({ route }: any) {
       }
       disconnectSocket();
     };
-  }, [token]);
+  }, [token, debugNoServer]);
 
   // --- 5. SYNC INVENTORY TO SERVER ---
   const syncInventory = useCallback(async () => {
+    if (debugNoServer) return;
     try {
       await updateInventory(token, stock);
     } catch {
       // Silent fail for now; next sync will retry
     }
-  }, [token, stock]);
+  }, [token, stock, debugNoServer]);
 
   useEffect(() => {
     if (inventoryLoaded) syncInventory();
@@ -143,19 +154,20 @@ export default function HomeScreen({ route }: any) {
 
   // --- 6. BROADCAST LOCATION ---
   useEffect(() => {
+    if (debugNoServer) return;
     if (isTracking && aujarActive && location) {
       const socket = getSocket();
       if (socket?.connected) {
         socket.emit('vendor_location_update', { lat: location.lat, lng: location.lng });
       }
     }
-  }, [location, isTracking, aujarActive]);
+  }, [location, isTracking, aujarActive, debugNoServer]);
 
   // Toggle broadcast
   const toggleBroadcast = () => {
     const next = !isTracking;
     setIsTracking(next);
-    if (!next) {
+    if (!next && !debugNoServer) {
       getSocket()?.emit('vendor_stop_broadcast');
     }
   };
@@ -163,11 +175,13 @@ export default function HomeScreen({ route }: any) {
   // --- 7. HANDLE BUYER REQUEST ---
   const handleDecision = (decision: 'accepted' | 'rejected') => {
     if (!incomingRequest) return;
-    getSocket()?.emit('request_decision', {
-      clientId: incomingRequest.clientId,
-      decision,
-      vendorLocation: location,
-    });
+    if (!debugNoServer) {
+      getSocket()?.emit('request_decision', {
+        clientId: incomingRequest.clientId,
+        decision,
+        vendorLocation: location,
+      });
+    }
     if (decision === 'accepted' && incomingRequest.clientLocation) {
       setAcceptedBuyerPin({
         lat: incomingRequest.clientLocation.lat,
