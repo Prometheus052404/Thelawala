@@ -11,6 +11,14 @@
           "modes": ["peripheral", "central"],
           "bluetoothAlwaysPermission": "Allow Thelawala to connect to the AUJAR module."
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
       ]
     ],
     "orientation": "portrait",
